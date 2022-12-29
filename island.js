@@ -54,33 +54,62 @@ function getNeighbors(row, col, matrix) {
   // Your code here
 }
 
+
+
 function countIslands(matrix) {
+  let count = 0;
+  let visitedSet = new Set();
+  let visited;
+  let answer = [];
+  for(let i = 0; i<matrix.length;i++){
+    for(let j = 0; j< matrix[i].length;j++){
+      if(matrix[i][j] == 1){
+        if(visited == undefined){
+          visited = traversing(0,0,matrix);
+          visited.forEach((el) =>{
+            visitedSet.add(el);
+          })
+          answer.push([0,0]);
+          count++;
+        }
+        else if(visitedSet.has([i,j].toString()) == false){
+          answer.push([i,j]);
+          visited = traversing(i,j,matrix);
+          visited.forEach((el) =>{
+            visitedSet.add(el.toString());
+          })
+          count++;
+        }
+      }
+    }
+  }
+  return answer.length;
   
   // Create a visited set to store visited nodes
+  function traversing(row,col,matrix){
       let visited = new Set();
-      let count = 0;
       let queue = [];
-      let startNode = [0,0];
+      let startNode = [row,col];
       queue.push(startNode);
       visited.add(startNode.toString());
 
       while(queue.length !== 0){
         let currentCoord = queue.shift();
-        let row = currentCoord[0];
-        let col = currentCoord[1];
-        let currentVal = matrix[row][col];
-        if(currentVal == 1){
-          count++;
-        }
-        let neighbors = getNeighbors(row,col,matrix); 
+        let currentRow = currentCoord[0];
+        let currentCol = currentCoord[1];
+        
+        let neighbors = getNeighbors(currentRow,currentCol,matrix);
         neighbors.forEach((el) =>{
         if(visited.has(el.toString()) == false){
           visited.add(el.toString());
-        
           queue.push(el);
         }
         })
       };
+      let answer = [...visited];
+      return answer;
+    }
+  }
 
   // Initialize count to 0
   // Iterate through all indices in matrix
@@ -99,25 +128,24 @@ function countIslands(matrix) {
   // Return island count
   
   // Your code here
-}
 
 // Uncomment the lines below for local testing
-// const matrix = [
-//                 [1,1,1,0,0],
-//                 [0,1,1,0,1],
-//                 [0,1,1,0,1]
-//               ]
+ /*const matrix = [
+                 [1,1,1,0,0],
+                 [0,1,1,0,1],
+                 [0,1,1,0,1]
+               ]
 
-// console.log(getNeighbors(1, 1, matrix)); // [[0, 0], [0, 1], [0, 2], [1, 2], [2, 1], [2, 2]]
-// console.log(getNeighbors(2,4, matrix)) // [[1,4]]
+ //console.log(getNeighbors(1, 1, matrix)); // [[0, 0], [0, 1], [0, 2], [1, 2], [2, 1], [2, 2]]
+ //console.log(getNeighbors(2,4, matrix)) // [[1,4]]
 
-// const matrix2 = [
-//                     [1,1,1,0,1],
-//                     [0,0,0,0,1],
-//                     [1,0,0,1,0],
-//                 ]
+ const matrix2 = [
+                     [1,1,1,0,1],
+                     [0,0,0,0,1],
+                     [1,0,0,1,0],
+                 ]
 
-// console.log(countIslands(matrix)) // 2
-// console.log(countIslands(matrix2)); // 3
+ //console.log(countIslands(matrix)) // 2
+ console.log(countIslands(matrix2)); // 3*/
 
 module.exports = [countIslands, getNeighbors];
