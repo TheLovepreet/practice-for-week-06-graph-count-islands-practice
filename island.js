@@ -1,5 +1,46 @@
 function getNeighbors(row, col, matrix) {
-  
+  let neighbors = [];
+  if(matrix[row-1] !== undefined){
+    if(matrix[row-1][col] == 1){
+      neighbors.push([(row-1),col]);
+    }
+    if(matrix[row-1][col-1] !== undefined){
+      if(matrix[row-1][col-1] == 1){
+        neighbors.push([(row-1),(col-1)]);
+      }
+    }
+    if(matrix[row-1][col+1] !== undefined){
+      if(matrix[row-1][col+1] == 1){
+        neighbors.push([(row-1),(col+1)]);
+      }
+    }
+  }
+  if(matrix[row+1] !== undefined){
+    if(matrix[row+1][col] == 1){
+      neighbors.push([(row+1),(col)]);
+    }
+    if(matrix[row+1][col-1] !== undefined){
+      if(matrix[row+1][col-1] == 1){
+        neighbors.push([(row+1),(col-1)]);
+      }
+    }
+    if(matrix[row+1][col+1] !== undefined){
+      if(matrix[row+1][col+1] == 1){
+        neighbors.push([(row+1),(col+1)]);
+      }
+    }
+  }
+  if(matrix[row][col-1] !== undefined){
+    if(matrix[row][col-1] == 1){
+      neighbors.push([(row),(col-1)]);
+    }
+  }
+  if(matrix[row][col+1] !== undefined){
+    if(matrix[row][col+1] == 1){
+      neighbors.push([(row),(col+1)]);
+    }
+  }
+  return neighbors;
   // Check top
   // Check top right
   // Check right
@@ -16,6 +57,31 @@ function getNeighbors(row, col, matrix) {
 function countIslands(matrix) {
   
   // Create a visited set to store visited nodes
+      let visited = new Set();
+      let count = 0;
+      let queue = [];
+      let startNode = [0,0];
+      queue.push(startNode);
+      visited.add(startNode.toString());
+
+      while(queue.length !== 0){
+        let currentCoord = queue.shift();
+        let row = currentCoord[0];
+        let col = currentCoord[1];
+        let currentVal = matrix[row][col];
+        if(currentVal == 1){
+          count++;
+        }
+        let neighbors = getNeighbors(row,col,matrix); 
+        neighbors.forEach((el) =>{
+        if(visited.has(el.toString()) == false){
+          visited.add(el.toString());
+        
+          queue.push(el);
+        }
+        })
+      };
+
   // Initialize count to 0
   // Iterate through all indices in matrix
     // If an index contains a 1 and has not been visited, 
